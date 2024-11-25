@@ -1,0 +1,104 @@
+
+import Lab7BinaryTree.BinaryTreeNode;
+import Lab7BinaryTree.LinkedBinaryTree;
+
+public class LinkedBinarySearchTree<E extends Comparable<E>> extends LinkedBinaryTree<E> {
+
+    public LinkedBinarySearchTree() {
+        super();
+        root = null;
+    }
+    
+    public BinaryTreeNode<E> insertNode(E key) {
+        root = insert(root, key);
+        return root;
+    }
+
+    public BinaryTreeNode<E> insert(BinaryTreeNode<E> root, E key){
+    	if(root == null){
+    	return new BinaryTreeNode<E>(key, root, root, root);
+    	}else{
+    	int compareResult = key.compareTo(root.getElement());
+    	if( compareResult == 0){
+    	return null;
+    	}else if(compareResult < 0){
+    	root.setLeft(insert(root.getLeft(), key));
+    	} else {
+    	root.setRight(insert(root.getRight(), key));
+    		}
+    	}
+    	return root;
+    }
+    public BinaryTreeNode<E> deleteNode(E key) {
+        root = delete(root, key);
+        return root;
+    }
+    
+    public BinaryTreeNode<E> delete(BinaryTreeNode<E> root, E key) {
+        if (root == null) {
+            return null;
+        }
+        int compareResult = key.compareTo(root.getElement());
+
+        if (compareResult < 0) {
+            root.setLeft(delete(root.getLeft(), key));
+        } else if (compareResult > 0) {
+            root.setRight(delete(root.getRight(), key));
+        } else {
+            // Case 1: Delete a leaf (node with no children)
+            if (root.getLeft() == null && root.getRight() == null) {
+                return null;
+            }
+            // Case 2: Delete a node with only one child
+            else if (root.getLeft() == null) {
+                return root.getRight();
+            } else if (root.getRight() == null) {
+                return root.getLeft();
+            } else {
+                // Case 3: Delete a node with two children
+                BinaryTreeNode<E> minRight = smallestNode(root.getRight());
+                // Replace the value of the current node with the successor
+                root.setElement(minRight.getElement());
+                // Delete the right subtree
+                root.setRight(delete(root.getRight(), minRight.getElement()));
+            }
+        }
+        return root;
+    }
+
+    protected BinaryTreeNode<E> smallestNode(BinaryTreeNode<E> root) {
+        while (root.getLeft() != null) {
+            root = root.getLeft();
+        }
+        return root;
+    }
+
+    public BinaryTreeNode<E> searchNode(E key) {
+        return search(root, key);
+    }
+    
+    public BinaryTreeNode<E> search(BinaryTreeNode<E> root, E key) {
+       if(root == null) {
+    	   return null;
+       }
+       int compareResult = key.compareTo(root.getElement());
+       
+       if(compareResult == 0) {
+    	   return root;
+       } else if (compareResult < 0) {
+    	   return search(root.getLeft(), key);
+       } else {
+    	   return search(root.getRight(), key);
+       }
+    }
+    
+    @Override
+    public E remove(BinaryTreeNode<E> v) {
+        return null;
+    }
+
+	public void display() {
+		printTreeGraph();
+
+	}
+}
