@@ -1,0 +1,9 @@
+public class TestLinkedBinarySearchTree {
+	public static void main(String[] arg) {
+        LinkedBinarySearchTree<Integer> bst = new LinkedBinarySearchTree<>();
+		Menu menu = new Menu(bst);
+	    menu.mainMenu();
+	    
+	    }
+	}
+			
